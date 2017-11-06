@@ -20,8 +20,10 @@ import org.apache.hadoop.util.ToolRunner;
 public class EntityAnalysisMRJob extends Configured implements Tool {
 
     private static final String projectRootPath = System.getProperty("user.dir");
+    public static final  boolean runOnCluster = true; // local run need set false
     
-    public static final  boolean runOnCluster = true;
+    //public static final String hdfsClusterPath = projectRootPath; // if runOnCluster = false
+    public static final String hdfsClusterPath = "/user/alan/study/cluster-mapred/"; // if runOnCluster = true, HDFS path
 
     private static final String END_CLUSTER_FLAG = "END_CLUSTER_FLAG";
     private static final String START_CLUSTER_FLAG = "START_CLUSTER_FLAG";
@@ -50,11 +52,6 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
 
 
     public int run(String[] strings) throws Exception {
-        String hdfsClusterPath = projectRootPath;
-    	if (runOnCluster) {
-    		hdfsClusterPath = "/user/alan/study/cluster-mapred/"; // HDFS path, if run on cluster
-        }
-    	
     	conf = getConf();
 
         File localOutputDirectory = new File(String.format("%s%s",hdfsClusterPath ,"/output" ));

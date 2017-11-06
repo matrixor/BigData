@@ -21,15 +21,19 @@ public class RunClusterFlow {
 
     public static void main(String[] args) {
 
-        Path inputFile = null;
+        Path inputFile = null;    	
         if(EntityAnalysisMRJob.runOnCluster) {
-            inputFile = Paths.get(projectRootPath, mapped_data);
+        	//inputFile = Paths.get(projectRootPath, mapped_data);
+        	inputFile = Paths.get(EntityAnalysisMRJob.hdfsClusterPath, "output");
         } else {
             inputFile = Paths.get(projectRootPath, "output");
         }
 
 
         Path outputFile = Paths.get(projectRootPath, clustered_data);
+        if(EntityAnalysisMRJob.runOnCluster) {
+        	outputFile = Paths.get(EntityAnalysisMRJob.hdfsClusterPath, clustered_data);
+        }
 
         List<EntityStruct> entities = EntityAnalysisETL.extractData(inputFile);
 
