@@ -20,7 +20,8 @@ import org.apache.hadoop.util.ToolRunner;
 public class EntityAnalysisMRJob extends Configured implements Tool {
 
     private static final String projectRootPath = System.getProperty("user.dir");
-    public static final  boolean runOnCluster = false;
+    
+    public static final  boolean runOnCluster = true;
 
     private static final String END_CLUSTER_FLAG = "END_CLUSTER_FLAG";
     private static final String START_CLUSTER_FLAG = "START_CLUSTER_FLAG";
@@ -49,9 +50,14 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
 
 
     public int run(String[] strings) throws Exception {
-        conf = getConf();
+        String hdfsClusterPath = projectRootPath;
+    	if (runOnCluster) {
+    		hdfsClusterPath = "/user/alan/study/cluster-mapred/"; // HDFS path, if run on cluster
+        }
+    	
+    	conf = getConf();
 
-        File localOutputDirectory = new File(String.format("%s%s",projectRootPath ,"/output" ));
+        File localOutputDirectory = new File(String.format("%s%s",hdfsClusterPath ,"/output" ));
 
         if(localOutputDirectory.exists()) {
 
@@ -62,7 +68,7 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
 
         }
 
-        File localMappedDirectory = new File(String.format("%s%s",projectRootPath ,"/mapped_data" ));
+        File localMappedDirectory = new File(String.format("%s%s",hdfsClusterPath ,"/mapped_data" ));
 
         if(localMappedDirectory.exists()) {
 
@@ -74,12 +80,15 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
         }
 
 
-        outputFile = new Path(projectRootPath, mapped_data);
-        inputFile = new Path(projectRootPath, raw_data);
+        outputFile = new Path(hdfsClusterPath, mapped_data);
+        inputFile = new Path(hdfsClusterPath, raw_data);
         Job job = Job.getInstance(conf);
 
         job.setJarByClass(EntityAnalysisMRJob.class);
         job.setMapperClass(EntityMapper.class);
+        // Local run
+        //job.setReducerClass(EntityReducer.class);
+        // Cluster-ETL run
         job.setReducerClass(EntityReducerClusterSeeds.class);
 
         // these values define the types for the MAGIC shuffle sort steps
@@ -93,9 +102,8 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
     }
 
     public static int runMigrate( ) throws Exception {
-
         FileSystem fs = FileSystem.get(conf);
-        Path tmpPath = new Path( projectRootPath);
+        Path tmpPath = new Path( projectRootPath);      
         mappedDataPath = new Path( tmpPath.toString()+mappedDataForAnalysis);
 
         System.out.println( String.format("  mappedDataPath %s", mappedDataPath ));

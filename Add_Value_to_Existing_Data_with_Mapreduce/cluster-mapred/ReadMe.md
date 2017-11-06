@@ -16,5 +16,24 @@
    `public static final  boolean runOnCluster = false` for local testing on Linux  
     `public static final  boolean runOnCluster = true` for Hadoop  
  * 2 run  com.eduonix.hadoop.partone.etl.EntityAnalysisETL  
-    
-   
+ 
+ 
+## AZ
+ Build
+ 	mvn clean install -Pmapreduce
+ 	-- it will generate uberjsr/ubu-mr.jar and dependency-reduced-pom.xml  
+ 	mvn clean install -Petl
+ 	-- it will generate uberjsr/ubu-etl.jar
+ 
+ Run
+ 	Copy ComercialBanks.csv to ${project.basedir}/uberjar/
+ 	
+	-- local
+ 	java -jar ubu-mr.jar
+ 	
+ 	-- hadoop cluster
+ 	hadoop jar ubu-mr.jar
+ 	
+ 	-- it will generate 'output' folder under ${project.basedir}/uberjar/, including two files : 'part-r-00000' , '_SUCCESS'
+ 	
+ 	
