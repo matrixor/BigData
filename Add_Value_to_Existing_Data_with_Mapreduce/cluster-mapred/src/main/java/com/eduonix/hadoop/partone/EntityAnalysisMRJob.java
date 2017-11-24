@@ -19,7 +19,6 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
     private static final String projectRootPath = System.getProperty("user.dir");
     public static final  boolean runOnCluster = true; // local run need set false
     
-    //public static final String hdfsClusterPath = projectRootPath; // if runOnCluster = false
     public static final String hdfsClusterPath = "/user/alan/study/cluster-mapred/"; // if runOnCluster = true, HDFS path
 
     private static final String END_CLUSTER_FLAG = "END_CLUSTER_FLAG";
@@ -95,6 +94,7 @@ public class EntityAnalysisMRJob extends Configured implements Tool {
         // projectRootPath /home/user/hou/zhanga1/workspace/bigdata/study/cluster-mapred/uberjar
         // mappedDataPath /home/user/hou/zhanga1/workspace/bigdata/study/cluster-mapred/uberjar/mapped_data
 
+        // Here is copy to local. It can change to copy to hdfs.
         fs.copyToLocalFile(false, outputFile, mappedDataPath);
         fs.copyToLocalFile(false, inputFile, mappedDataPath);
 
