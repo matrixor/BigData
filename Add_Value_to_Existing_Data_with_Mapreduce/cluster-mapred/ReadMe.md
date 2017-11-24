@@ -21,15 +21,18 @@
 ## AZ
  Build
  	mvn clean install -Pmapreduce
- 	-- it will generate uberjsr/ubu-mr.jar and dependency-reduced-pom.xml  
+ 	-- it will generate uberjar/ubu-mr.jar and dependency-reduced-pom.xml  
  	mvn clean install -Petl
  	-- it will generate uberjsr/ubu-etl.jar
  
  Run
- 	Copy ComercialBanks.csv to ${project.basedir}/uberjar/
+ 	Before run , copy ComercialBanks.csv to ${project.basedir}/uberjar/
  	
 	-- local
  	java -jar ubu-mr.jar
+ 	-- it will generate ./mapped_data and ./output folders
+ 	-- under ./mapped_data:   _SUCCESS , part-r-00000, ComercialBanks10k.csv
+ 	-- under ./output:   _SUCCESS , part-r-00000
  	
  	-- hadoop cluster
  	hadoop jar ubu-mr.jar
