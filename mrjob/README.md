@@ -5,9 +5,9 @@ The team member just need write their own custom job : mrjob_spark_xxxxx.py
 
 
 
-First you need have  a ec2 instance on aws.
+First you need have an ec2 instance on aws.
 
-Then run below comand on ec2: 
+Then run below command on the ec2: 
 
 -python mrjob_runner mrjob_spark_word_count
 
